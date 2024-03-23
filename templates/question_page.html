@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+{% block title %}Welcome{% endblock %}
+{% block content %}
+
+<div class="container mt-5"> 
+    <form action="{{ url_for('question_page', url_id=url_id) }}" method="post">
+        <!-- Hidden input field for URL ID -->
+        <input type="hidden" name="url_id" value="{{ url_id }}">
+
+        {% if data == {} %}
+            Welcome
+
+        {% else %}
+            <h1 class="text-center">{{ title }}</h1>
+            
+            {% for subdimension, questions in data.items() %}
+                <fieldset class="card mt-4">
+                    <div class="card-header">
+                        <h2>{{ subdimension }}</h2>
+                    </div>
+                    <div class="card-body">
+                        <!-- Loop through questions for each subdimension -->
+                        {% for i, question in questions.items() %}
+                            <div class="form-group">
+                                <label>{{ question["question_sentence"] }}</label>
+                                <div >
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" class="form-check-input" name="{{ subdimension }}_{{ loop.index }}"
+                                            id="{{ subdimension }}_{{ loop.index }}_0" value="0" required>
+                                        <label class="form-check-label" for="{{ subdimension }}_{{ loop.index }}_0">0</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" class="form-check-input" name="{{ subdimension }}_{{ loop.index }}"
+                                            id="{{ subdimension }}_{{ loop.index }}_1" value="1" required>
+                                        <label class="form-check-label" for="{{ subdimension }}_{{ loop.index }}_1">1</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" class="form-check-input" name="{{ subdimension }}_{{ loop.index }}"
+                                            id="{{ subdimension }}_{{ loop.index }}_2" value="2" required checked>
+                                        <label class="form-check-label" for="{{ subdimension }}_{{ loop.index }}_2">2</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" class="form-check-input" name="{{ subdimension }}_{{ loop.index }}"
+                                            id="{{ subdimension }}_{{ loop.index }}_3" value="3" required>
+                                        <label class="form-check-label" for="{{ subdimension }}_{{ loop.index }}_3">3</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" class="form-check-input" name="{{ subdimension }}_{{ loop.index }}"
+                                            id="{{ subdimension }}_{{ loop.index }}_4" value="4" required>
+                                        <label class="form-check-label" for="{{ subdimension }}_{{ loop.index }}_4">4</label>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </fieldset>
+            {% endfor %}
+
+        {% endif %}
+
+        <!-- Next button -->
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary">Next</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

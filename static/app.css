@@ -1,0 +1,5 @@
+body { padding-bottom: 70px; }
+
+.input-group-addon {
+    min-width: 60px; /* Adjust as needed */
+  }

@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block title %}Pair Input Form{% endblock %}
+{% block content %}
+
+
+
+<div class="container mt-5">
+    <h2>Pair Values Form</h2>
+    <form method="POST" action="{{ url_for('pairwise_comp_page') }}">
+        <div class="row">
+            {% for pair in pairs %}
+            <div class="col-md-6 mb-3">
+                <label>{{ pair[0] }} - {{ pair[1] }}</label>
+                <input type="range" class="form-control-range" name="pair_{{ loop.index }}" min="1" max="9" step="1">
+            </div>
+            {% endfor %}
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+
+
+
+{% endblock %}

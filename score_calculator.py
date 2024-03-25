@@ -8,16 +8,19 @@
 '''
 
 def score_calculator(question_dict):
+    scores = {}
     for title in question_dict.keys():
         dim_score = 0.0
+        scores[title] = {}
         for subdimension, all_questions in question_dict[title].items():
             subdim_score = 0.0
+            scores[title][subdimension] = {}
             for i, res_dict in all_questions.items():
                 subdim_score += res_dict["weight"] * res_dict["answer"]
             
-            question_dict[title][subdimension]["score"] = subdim_score
+            scores[title][subdimension]["score"] = subdim_score
             dim_score += subdim_score
 
-        question_dict[title]["score"] = dim_score
+        scores[title]["score"] = dim_score
     
-    return question_dict
+    return scores

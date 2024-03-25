@@ -25,6 +25,8 @@ class QuestionsClass():
         for dim_pairs in self.subdim_list:
             self.pairs += list(combinations(dim_pairs, 2))
 
+        self.scores = {} # TODO: instead of appending to "questions" dict, calculate here
+
     def get_questions(self):
         # take also weights and make them {"answer": , "weight":}
         q_df = pd.read_excel(os.path.join(os.getcwd(), "data", "dims-coefficients.xlsx"))
@@ -46,5 +48,7 @@ class QuestionsClass():
 
         return question_dict
     
-
-q = QuestionsClass()
+    def clear(self):
+        self.questions = self.get_questions()
+        self.current_dim_ind = -1
+        self.completed_dimensions = set()

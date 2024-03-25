@@ -1,12 +1,13 @@
-from flask import render_template, request
+from flask import render_template, request, session
+import copy
 
 from score_calculator import *
-from model.questions_model import q
-
+from model.questions_model import QuestionsClass
 
 
 def pairwise_comp_page():
     if request.method == "GET":
+        q = session["questions"]
         return render_template('pairwise_comp_page.html', pairs=q.pairs)
 
     elif request.method == "POST":
@@ -19,6 +20,11 @@ def pairwise_comp_page():
 
 
 def question_page(url_id):
+    if not "questions" in session:
+        session["questions"] = QuestionsClass()
+
+    q = session["questions"]
+
     q.current_dim_ind = int(url_id)
     
     if request.method == "POST":
@@ -31,7 +37,7 @@ def question_page(url_id):
 
     if q.current_dim_ind == len(q.dim_list):
         if len(q.completed_dimensions) == q.current_dim_ind:
-            score_dict = score_calculator(q.questions)
+            score_dict = score_calculator(copy.deepcopy(q.questions))
             return render_template('digital_report.html', score_dict=score_dict)
         else:
             return render_template('index.html')
@@ -40,9 +46,9 @@ def question_page(url_id):
 
 
 def main_page():
-    if request.method == "GET":
-        return render_template('index.html')
-        
+    session["questions"] = QuestionsClass()
+    return render_template('index.html')
+
 
     
     

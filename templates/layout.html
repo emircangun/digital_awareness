@@ -10,6 +10,23 @@
    </head>
    <body>
       <div class="main-wrapper">
+         <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="">Çok güzel bir tez</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav">
+                <li class="nav-item active">
+                  <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{  url_for('question_page', url_id=0) }}">Questions</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{  url_for('pairwise_comp_page')  }}">Pairwise Comparison</a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+
          <div class="wrapper">
             <div id="content" class="content-container">
                {% block content %}{% endblock %}
@@ -21,7 +38,7 @@
          <footer class="">
             <!-- Copyright -->
             <div class="navbar fixed-bottom center text-dark">
-               &copy; 2024 Aleyna Tez
+               &copy; 2024 Aleyna&Beyza Tez
             </div>
             <!-- Copyright -->
          </footer>

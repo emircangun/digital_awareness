@@ -1,25 +1,61 @@
+<!-- Your HTML template -->
 {% extends "layout.html" %}
 {% block title %}Pair Input Form{% endblock %}
 {% block content %}
 
-
-
 <div class="container mt-5">
-    <h2>Pair Values Form</h2>
+    <h2 class="text-center">Pair Values Form</h2>
+    <hr>
     <form method="POST" action="{{ url_for('pairwise_comp_page') }}">
         <div class="row">
-            {% for pair in pairs %}
-            <div class="col-md-6 mb-3">
-                <label>{{ pair[0] }} - {{ pair[1] }}</label>
-                <input type="range" class="form-control-range" name="pair_{{ loop.index }}" min="1" max="9" step="1">
-            </div>
+            {% for dim_name, pairs in pairs_with_titles.items() %}
+                <div class="col-sm-6">
+                    <div class="card text-center mt-4 p-3"{% if high_crs != None and dim_name in high_crs %} style="background:rgb(255, 167, 248)" {% endif %}>
+                        <h2>{{ dim_name }}</h2>
+                        <hr>
+                        {% for pair in pairs %}
+                            <div class="" style="margin-top: 10px;">
+                                <div class="row mb-auto">
+                                    <div class="col-5 text-left">
+                                        <label>{{ pair[0] }}</label>
+                                    </div>
+                                    <div class="col-2">
+                                        <input type="text" id="rangeValue_{{ pair[0] }}_{{ pair[1] }}" class="form-control form-control-sm" readonly>
+                                    </div>
+                                    <div class="col-5 text-right">
+                                        <label>{{ pair[1] }}</label>
+                                    </div>
+                                </div> 
+                                <div class="row">
+                                    <div class="col-12">
+                                        <input type="range" class="form-control-range" name="comp_{{ pair[0] }}_{{ pair[1] }}" min="1" max="17" step="1" value="{% if pair_values.get('comp_'~pair[0]~'_'~pair[1]) %}{{ pair_values.get('comp_'~pair[0]~'_'~pair[1]) }}{% endif %}" oninput="updateTextInput(this)">
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                        {% endfor %}
+                    </div>
+                </div>
             {% endfor %}
         </div>
+
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
 
-
+<script>
+    function updateTextInput(input) {
+        var value = input.value;
+        if (value < 9) {
+            value = 1/(10-value);
+        } else {
+            value = value - 8;
+        }
+        var inputId = input.name.replace('comp_', 'rangeValue_');
+        var output = document.getElementById(inputId);
+        output.value = value;
+    }
+</script>
 
 
 {% endblock %}

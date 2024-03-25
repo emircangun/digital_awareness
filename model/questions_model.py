@@ -21,11 +21,11 @@ class QuestionsClass():
         for dim in self.dim_list:
             self.subdim_list.append(list(self.questions[dim].keys()))
 
-        self.pairs = []
-        for dim_pairs in self.subdim_list:
-            self.pairs += list(combinations(dim_pairs, 2))
-
-        self.scores = {} # TODO: instead of appending to "questions" dict, calculate here
+        self.pairs_with_titles = {}
+        for dim_name, dim_pairs in zip(self.dim_list, self.subdim_list):
+            self.pairs_with_titles[dim_name] = list(combinations(dim_pairs, 2))
+        
+        self.scores = {}
 
     def get_questions(self):
         # take also weights and make them {"answer": , "weight":}

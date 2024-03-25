@@ -1,5 +1,9 @@
-body { padding-bottom: 70px; }
+body { 
+  padding-bottom: 70px;
+  background-image: url('bg.gif');
+  background-position: center;
+}
 
 .input-group-addon {
     min-width: 60px; /* Adjust as needed */
-  }
+}

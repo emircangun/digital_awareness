@@ -22,7 +22,6 @@ def create_app():
     return app
 
 app = create_app()
-# Session(app)
 
 if __name__ == "__main__":
     app.run(host=config.LOCALHOST_IP, port=config.PORT, debug=True)

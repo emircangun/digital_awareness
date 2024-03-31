@@ -1,10 +1,14 @@
 from flask import render_template, request, session, request
+from io import BytesIO
+import matplotlib
+import pandas as pd
+import base64
 import copy
 import ahpy
 
 from score_calculator import *
 from model.questions_model import QuestionsClass
-
+from plot import make_spider
 
 
 def pairwise_comp_page():
@@ -70,11 +74,47 @@ def question_page(url_id):
     if q.current_dim_ind == len(q.dim_list):
         if len(q.completed_dimensions) == q.current_dim_ind:
             score_dict = score_calculator(copy.deepcopy(q.questions))
-            return render_template('digital_report.html', score_dict=score_dict)
+            q.scores = score_dict
+        
+            df = pd.DataFrame({
+                'group': ['Digital Awareness'],
+            })
+            for dim in q.dim_list:
+                df[dim] = q.scores[dim]["score"] 
+
+            img_tag = digital_report(df)
+
+            return render_template('digital_report.html', img_tag=img_tag, score_dict=score_dict)
         else:
             return render_template('index.html')
     
     return render_template('question_page.html', data=q.questions[q.dim_list[q.current_dim_ind]], title=q.dim_list[q.current_dim_ind], url_id=url_id+1)
+
+
+
+
+def digital_report(df):
+    # df = pd.DataFrame({
+    # 'group': ['A'],
+    # 'var1': [38],
+    # 'var2': [38],
+    # 'var3': [38],
+    # 'var4': [38],
+    # 'var5': [38]
+    # })
+
+    my_palette = matplotlib.colormaps["Set2"]
+
+    plt = make_spider(df, row=0, title='group '+df['group'][0], color=my_palette(0))
+    img = BytesIO()
+    plt.savefig(img, format='png')
+    img.seek(0)
+    
+    img_base64 = base64.b64encode(img.getvalue()).decode()
+    img_tag = f'<img src="data:image/png;base64,{img_base64}">'
+    plt.close()
+
+    return img_tag
 
 
 def main_page():

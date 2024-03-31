@@ -16,6 +16,7 @@ def create_app():
     app.add_url_rule("/", view_func=main_controller.main_page, methods=["GET", "POST"])
     app.add_url_rule("/questions/<int:url_id>", view_func=main_controller.question_page, methods=["GET", "POST"])
     app.add_url_rule("/pairwise-comparison", view_func=main_controller.pairwise_comp_page, methods=["GET", "POST"])
+    app.add_url_rule("/report", view_func=main_controller.digital_report, methods=["GET", "POST"])
     
     Session(app)
 

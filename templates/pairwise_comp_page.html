@@ -28,7 +28,14 @@
                                 </div> 
                                 <div class="row">
                                     <div class="col-12">
-                                        <input type="range" class="form-control-range" name="comp_{{ pair[0] }}_{{ pair[1] }}" min="1" max="17" step="1" value="{% if pair_values.get('comp_'~pair[0]~'_'~pair[1]) %}{{ pair_values.get('comp_'~pair[0]~'_'~pair[1]) }}{% endif %}" oninput="updateTextInput(this)">
+                                        <div class="range-container">
+                                            <input type="range" class="form-control-range" name="comp_{{ pair[0] }}_{{ pair[1] }}" min="1" max="17" step="1" value="{% if pair_values.get('comp_'~pair[0]~'_'~pair[1]) %}{{ pair_values.get('comp_'~pair[0]~'_'~pair[1]) }}{% endif %}" oninput="updateTextInput(this)">
+                                            
+                                            {% for i in range(1, 18) %}
+                                                <div class="range-number" style="left: {{ (i - 1) * (100 / 17) + 2.75 }}%;">{{ (i < 9) * (10 - i) + (i >= 9) * (i - 8) }}</div>
+                                            {% endfor %}
+                                        </div>
+                                        <!-- <input type="range" class="form-control-range" name="comp_{{ pair[0] }}_{{ pair[1] }}" min="1" max="17" step="1" value="{% if pair_values.get('comp_'~pair[0]~'_'~pair[1]) %}{{ pair_values.get('comp_'~pair[0]~'_'~pair[1]) }}{% endif %}" oninput="updateTextInput(this)"> -->
                                     </div>
                                 </div>
                             </div>
@@ -44,13 +51,18 @@
 </div>
 
 <script>
-    function updateTextInput(input) {
-        var value = input.value;
+    function getCorrespondingNum(value) {
         if (value < 9) {
-            value = 1/(10-value);
+            value = 10 - value;
         } else {
             value = value - 8;
         }
+
+        return value
+    }
+    function updateTextInput(input) {
+        var value = input.value;
+        value = getCorrespondingNum(value);
         var inputId = input.name.replace('comp_', 'rangeValue_');
         var output = document.getElementById(inputId);
         output.value = value;

@@ -48,6 +48,14 @@ class QuestionsClass():
 
         return question_dict
     
+    def update_weights_from_compares(self, dim_compares):
+        for dim_name, subdims in zip(self.dim_list, self.subdim_list):
+            for subdim_name in subdims:
+                subdim_weight = dim_compares[dim_name].local_weights[subdim_name]
+                n_questions = len(self.questions[dim_name][subdim_name].keys())
+                for i in self.questions[dim_name][subdim_name].keys():
+                    self.questions[dim_name][subdim_name][i]["weight"] = subdim_weight / n_questions
+    
     def clear(self):
         self.questions = self.get_questions()
         self.current_dim_ind = -1

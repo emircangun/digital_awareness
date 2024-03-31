@@ -1,9 +1,36 @@
 body { 
   padding-bottom: 70px;
-  background-image: url('bg.gif');
+}
+
+.background-image {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  background-image: url('itu-istanbul-teknik_universitesi-logo.png');
+  background-repeat: no-repeat;
   background-position: center;
+  background-size: 20%;
+  opacity: 0.1; /* Adjust the transparency level */
+  z-index: -1; /* Ensure the background is behind other content */
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .input-group-addon {
     min-width: 60px; /* Adjust as needed */
+}
+
+.range-container {
+  position: relative;
+  width: 100%;
+  margin-top: 30px;
+}
+
+.range-number {
+  position: absolute;
+  top: -25px; /* Adjust this value to position the number as desired */
+  left: 0;
+  transform: translateX(-50%);
 }

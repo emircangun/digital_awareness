@@ -41,6 +41,12 @@ def pairwise_comp_page():
         if len(high_consistency_ratios) > 0:
             return render_template('pairwise_comp_page.html', pairs_with_titles=q.pairs_with_titles, high_crs=high_consistency_ratios, pair_values=request.form)
         else:
+            if not "questions" in session:
+                session["questions"] = QuestionsClass()
+
+            q = session["questions"]
+            q.update_weights_from_compares(dim_compares)
+
             return render_template('digital_report.html', score_dict={"0": pair_values, "1": dim_compares})
 
 
@@ -74,9 +80,3 @@ def question_page(url_id):
 def main_page():
     session["questions"] = QuestionsClass()
     return render_template('index.html')
-
-
-    
-    
-
-    

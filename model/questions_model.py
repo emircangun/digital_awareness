@@ -27,6 +27,10 @@ class QuestionsClass():
         
         self.scores = {}
 
+        self.dim_priorities = {}
+        for dim in self.dim_list:
+            self.dim_priorities[dim] = 0
+
     def get_questions(self):
         # take also weights and make them {"answer": , "weight":}
         q_df = pd.read_excel(os.path.join(os.getcwd(), "data", "dims-coefficients.xlsx"))

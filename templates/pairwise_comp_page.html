@@ -1,12 +1,32 @@
 <!-- Your HTML template -->
 {% extends "layout.html" %}
-{% block title %}Pair Input Form{% endblock %}
+{% block title %}Pairwise Comparison{% endblock %}
 {% block content %}
 
 <div class="container mt-5">
-    <h2 class="text-center">Pair Values Form</h2>
+    <h2 class="text-center">Dimension Priority</h2>
     <hr>
     <form method="POST" action="{{ url_for('pairwise_comp_page') }}">
+        <div class="row">
+            {% for dim_name, priority in dim_priorities.items() %}
+                <div class="col-sm-6">
+                    <div class="card text-center mt-4 p-3">
+                        <div>{{ dim_name }}</div>
+                        <select class="form-control priority-dropdown" name="priority_{{ dim_name }}">
+                            <option value="1" {% if priority == 1 %} selected {% endif %}>1</option>
+                            <option value="2" {% if priority == 2 %} selected {% endif %}>2</option>
+                            <option value="3" {% if priority == 3 %} selected {% endif %}>3</option>
+                            <option value="4" {% if priority == 4 %} selected {% endif %}>4</option>
+                            <option value="5" {% if priority == 5 %} selected {% endif %}>5</option>
+                        </select>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <hr>
+        
+        <h2 class="text-center">Pairwise Comparison</h2>
         <div class="row">
             {% for dim_name, pairs in pairs_with_titles.items() %}
                 <div class="col-sm-6">
@@ -60,6 +80,7 @@
 
         return value
     }
+    
     function updateTextInput(input) {
         var value = input.value;
         value = getCorrespondingNum(value);

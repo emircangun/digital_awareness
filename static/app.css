@@ -34,3 +34,7 @@ body {
   left: 0;
   transform: translateX(-50%);
 }
+
+.priority-dropdown option:disabled {
+  color: #d8d8d8; /* Change to the color you prefer for disabled options */
+}

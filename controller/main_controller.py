@@ -14,20 +14,24 @@ from plot import make_spider
 def pairwise_comp_page():
     if request.method == "GET":
         q = session["questions"]
-        return render_template('pairwise_comp_page.html', pairs_with_titles=q.pairs_with_titles, high_crs=None, pair_values={})  # Passing an empty dictionary for pair_values initially
+        return render_template('pairwise_comp_page.html', pairs_with_titles=q.pairs_with_titles, dim_priorities=q.dim_priorities, high_crs=None, pair_values={})
 
     elif request.method == "POST":
+        q = session["questions"]
         value_mapping = {1: 1/9, 2: 1/8, 3: 1/7, 4: 1/6, 5: 1/5, 6: 1/4, 7: 1/3, 8: 1/2}
         pair_values = {}
         for key, value in request.form.items():
             if key.startswith('comp_'):
-                dims = key.split("_")[1:]  # [dim1, dim2]
+                dims = key.split("_")[1:]
                 if int(value) in value_mapping.keys():
                     pair_values[(dims[0], dims[1])] = value_mapping[int(value)]
                 else:
                     pair_values[(dims[0], dims[1])] = int(value) - 8
+            
+            elif key.startswith("priority_"):
+                dim = key.split("_")[1]
+                q.dim_priorities[dim] = int(value)
 
-        q = session["questions"]
         dim_compares = {}
         high_consistency_ratios = []
         for dim_name, subdims in zip(q.dim_list, q.subdim_list):
@@ -92,17 +96,7 @@ def question_page(url_id):
 
 
 
-
 def digital_report(df):
-    # df = pd.DataFrame({
-    # 'group': ['A'],
-    # 'var1': [38],
-    # 'var2': [38],
-    # 'var3': [38],
-    # 'var4': [38],
-    # 'var5': [38]
-    # })
-
     my_palette = matplotlib.colormaps["Set2"]
 
     plt = make_spider(df, row=0, title='group '+df['group'][0], color=my_palette(0))

@@ -1,3 +1,5 @@
+from flask import session
+
 
 '''
 {'Organization ': {'Organizational Structure Management': { 0: {'question_sentence': "Our company's organizational structure has sufficient capacity to support digital transformation projects.", 'weight': 0.04409100048181188, 'answer': None}, 
@@ -8,6 +10,8 @@
 '''
 
 def score_calculator(question_dict):
+    q = session["questions"]
+
     scores = {}
     for title in question_dict.keys():
         dim_score = 0.0
@@ -21,6 +25,6 @@ def score_calculator(question_dict):
             scores[title][subdimension]["score"] = subdim_score
             dim_score += subdim_score
 
-        scores[title]["score"] = dim_score
+        scores[title]["score"] = dim_score * q.dim_priorities[title]
     
     return scores

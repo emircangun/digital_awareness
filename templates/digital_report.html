@@ -1,9 +1,14 @@
 {% extends "layout.html" %}
-{% block title %}Welcome{% endblock %}
+{% block title %}Report{% endblock %}
 {% block content %}
 
+<div class="container">
+    <h2>Thank you for completing the survey. You can receive your recommendations in our final delivery.</h2>
+</div>
 
-{{ img_tag | safe }}
+<div class="container">
+    {{ img_tag | safe }}
+</div>
 
 {{ score_dict }}
 

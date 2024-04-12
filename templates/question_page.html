@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% block title %}Welcome{% endblock %}
+{% block title %}Survey{% endblock %}
 {% block content %}
 
 <div class="container mt-5"> 
@@ -28,27 +28,27 @@
                                         <div class="form-check form-check-inline">
                                             <input type="radio" class="form-check-input" name="{{ subdimension }}_{{ loop.index }}"
                                                 id="{{ subdimension }}_{{ loop.index }}_0" value="0" required>
-                                            <label class="form-check-label" for="{{ subdimension }}_{{ loop.index }}_0">0</label>
+                                            <label class="form-check-label" for="{{ subdimension }}_{{ loop.index }}_0">Strongly Disagree</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input type="radio" class="form-check-input" name="{{ subdimension }}_{{ loop.index }}"
                                                 id="{{ subdimension }}_{{ loop.index }}_1" value="1" required>
-                                            <label class="form-check-label" for="{{ subdimension }}_{{ loop.index }}_1">1</label>
+                                            <label class="form-check-label" for="{{ subdimension }}_{{ loop.index }}_1">Disagree</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input type="radio" class="form-check-input" name="{{ subdimension }}_{{ loop.index }}"
                                                 id="{{ subdimension }}_{{ loop.index }}_2" value="2" required checked>
-                                            <label class="form-check-label" for="{{ subdimension }}_{{ loop.index }}_2">2</label>
+                                            <label class="form-check-label" for="{{ subdimension }}_{{ loop.index }}_2">Neutral</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input type="radio" class="form-check-input" name="{{ subdimension }}_{{ loop.index }}"
                                                 id="{{ subdimension }}_{{ loop.index }}_3" value="3" required>
-                                            <label class="form-check-label" for="{{ subdimension }}_{{ loop.index }}_3">3</label>
+                                            <label class="form-check-label" for="{{ subdimension }}_{{ loop.index }}_3">Agree</label>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input type="radio" class="form-check-input" name="{{ subdimension }}_{{ loop.index }}"
                                                 id="{{ subdimension }}_{{ loop.index }}_4" value="4" required>
-                                            <label class="form-check-label" for="{{ subdimension }}_{{ loop.index }}_4">4</label>
+                                            <label class="form-check-label" for="{{ subdimension }}_{{ loop.index }}_4">Strongly Agree</label>
                                         </div>
                                     </div>
                                 </div>

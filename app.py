@@ -19,7 +19,7 @@ def create_app():
     app.add_url_rule("/report", view_func=main_controller.digital_report, methods=["GET", "POST"])
     
     Session(app)
-
+    
     return app
 
 app = create_app()

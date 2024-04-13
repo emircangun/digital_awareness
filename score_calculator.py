@@ -25,6 +25,6 @@ def score_calculator(question_dict):
             scores[title][subdimension]["score"] = subdim_score
             dim_score += subdim_score
 
-        scores[title]["score"] = dim_score * q.dim_priorities[title]
+        scores[title]["score"] = dim_score
     
     return scores

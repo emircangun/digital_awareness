@@ -4,33 +4,50 @@
 {% block content %}
 
 <div class="container mt-5">
-    <h2 class="text-center">Dimension Priority</h2>
+    <h2 class="text-center">Pairwise Comparison</h2>
     <hr>
     <form method="POST" action="{{ url_for('pairwise_comp_page') }}">
         <div class="row">
-            {% for dim_name, priority in dim_priorities.items() %}
-                <div class="col-sm-6">
-                    <div class="card text-center mt-4 p-3">
-                        <div>{{ dim_name }}</div>
-                        <select class="form-control priority-dropdown" name="priority_{{ dim_name }}">
-                            <option value="1" {% if priority == 1 %} selected {% endif %}>1</option>
-                            <option value="2" {% if priority == 2 %} selected {% endif %}>2</option>
-                            <option value="3" {% if priority == 3 %} selected {% endif %}>3</option>
-                            <option value="4" {% if priority == 4 %} selected {% endif %}>4</option>
-                            <option value="5" {% if priority == 5 %} selected {% endif %}>5</option>
-                        </select>
+            <div class="card text-center mt-4 p-3 mx-auto"{% if dim_high_crs != None %} style="background:rgb(245, 125, 116)" {% endif %}>
+                <h2>Dimensions</h2>
+                <hr>
+                {% for pair in dim_pairs %}
+                    <div class="" style="margin-top: 10px;">
+                        <div class="row mb-auto">
+                            <div class="col-5 text-left">
+                                <label>{{ pair[0] }}</label>
+                            </div>
+                            <div class="col-2">
+                                <input type="text" id="rangeValue_{{ pair[0] }}_{{ pair[1] }}" class="form-control form-control-sm" readonly>
+                            </div>
+                            <div class="col-5 text-right">
+                                <label>{{ pair[1] }}</label>
+                            </div>
+                        </div> 
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="range-container">
+                                    <input type="range" class="form-control-range" name="priority_{{ pair[0] }}_{{ pair[1] }}" min="1" max="17" step="1" value="{% if pair_values.get('priority_'~pair[0]~'_'~pair[1]) %}{{ pair_values.get('priority_'~pair[0]~'_'~pair[1]) }}{% endif %}" oninput="updateTextInput_dim(this)">
+                                    
+                                    {% for i in range(1, 18) %}
+                                        <div class="range-number" style="left: {{ (i - 1) * (100 / 17) + 2.75 }}%;">{{ (i < 9) * (10 - i) + (i >= 9) * (i - 8) }}</div>
+                                    {% endfor %}
+                                </div>
+                                <!-- <input type="range" class="form-control-range" name="comp_{{ pair[0] }}_{{ pair[1] }}" min="1" max="17" step="1" value="{% if pair_values.get('comp_'~pair[0]~'_'~pair[1]) %}{{ pair_values.get('comp_'~pair[0]~'_'~pair[1]) }}{% endif %}" oninput="updateTextInput(this)"> -->
+                            </div>
+                        </div>
                     </div>
-                </div>
-            {% endfor %}
+                    <hr>
+                {% endfor %}
+            </div>
         </div>
 
         <hr>
         
-        <h2 class="text-center">Pairwise Comparison</h2>
         <div class="row">
-            {% for dim_name, pairs in pairs_with_titles.items() %}
+            {% for dim_name, pairs in subdim_pairs_with_titles.items() %}
                 <div class="col-sm-6">
-                    <div class="card text-center mt-4 p-3"{% if high_crs != None and dim_name in high_crs %} style="background:rgb(255, 167, 248)" {% endif %}>
+                    <div class="card text-center mt-4 p-3"{% if subdim_high_crs != None and dim_name in subdim_high_crs %} style="background:rgb(245, 125, 116)" {% endif %}>
                         <h2>{{ dim_name }}</h2>
                         <hr>
                         {% for pair in pairs %}
@@ -85,6 +102,14 @@
         var value = input.value;
         value = getCorrespondingNum(value);
         var inputId = input.name.replace('comp_', 'rangeValue_');
+        var output = document.getElementById(inputId);
+        output.value = value;
+    }
+
+    function updateTextInput_dim(input) {
+        var value = input.value;
+        value = getCorrespondingNum(value);
+        var inputId = input.name.replace('priority_', 'rangeValue_');
         var output = document.getElementById(inputId);
         output.value = value;
     }

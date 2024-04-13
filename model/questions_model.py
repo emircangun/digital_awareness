@@ -25,6 +25,8 @@ class QuestionsClass():
         for dim_name, dim_pairs in zip(self.dim_list, self.subdim_list):
             self.pairs_with_titles[dim_name] = list(combinations(dim_pairs, 2))
         
+        self.dim_pairs = list(combinations(self.dim_list, 2))
+
         self.scores = {}
 
         self.dim_priorities = {}

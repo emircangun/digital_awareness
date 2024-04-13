@@ -14,26 +14,28 @@ from plot import make_spider
 def pairwise_comp_page():
     if request.method == "GET":
         q = session["questions"]
-        return render_template('pairwise_comp_page.html', pairs_with_titles=q.pairs_with_titles, dim_priorities=q.dim_priorities, high_crs=None, pair_values={})
+        return render_template('pairwise_comp_page.html', subdim_pairs_with_titles=q.pairs_with_titles, dim_pairs=q.dim_pairs, subdim_high_crs=None, dim_high_crs=None, pair_values={})
 
     elif request.method == "POST":
         q = session["questions"]
         value_mapping = {1: 1/9, 2: 1/8, 3: 1/7, 4: 1/6, 5: 1/5, 6: 1/4, 7: 1/3, 8: 1/2}
         pair_values = {}
         for key, value in request.form.items():
-            if key.startswith('comp_'):
+            if key.startswith('comp_') or key.startswith('priority_'):
                 dims = key.split("_")[1:]
                 if int(value) in value_mapping.keys():
                     pair_values[(dims[0], dims[1])] = value_mapping[int(value)]
                 else:
                     pair_values[(dims[0], dims[1])] = int(value) - 8
             
-            elif key.startswith("priority_"):
-                dim = key.split("_")[1]
-                q.dim_priorities[dim] = int(value)
+            # elif key.startswith("priority_"):
+            #     dim = key.split("_")[1]
+            #     q.dim_priorities[dim] = int(value)
 
+
+        # subdimension pairwise comparison
         dim_compares = {}
-        high_consistency_ratios = []
+        subdim_high_consistency_ratios = []
         for dim_name, subdims in zip(q.dim_list, q.subdim_list):
             subdim_pair_values = {}
             for pair, value in pair_values.items():
@@ -44,10 +46,22 @@ def pairwise_comp_page():
             dim_compares[dim_name] = subdim_comp_result
 
             if subdim_comp_result.consistency_ratio > 0.1:
-                high_consistency_ratios.append(dim_name)
+                subdim_high_consistency_ratios.append(dim_name)
 
-        if len(high_consistency_ratios) > 0:
-            return render_template('pairwise_comp_page.html', pairs_with_titles=q.pairs_with_titles, high_crs=high_consistency_ratios, pair_values=request.form)
+        # dimension pairwise comparison
+        dim_high_consistency_ratios = None
+        dim_pair_values = {}
+        for pair, value in pair_values.items():
+            if pair[0] in q.dim_list:
+                dim_pair_values[pair] = value
+        
+        dim_comp_result = ahpy.Compare(name="dimension", comparisons=dim_pair_values, precision=3, random_index='saaty')
+        if dim_comp_result.consistency_ratio > 0.1:
+            dim_high_consistency_ratios = 1
+
+        # rendering
+        if len(subdim_high_consistency_ratios) > 0 or dim_high_consistency_ratios != None:
+            return render_template('pairwise_comp_page.html', subdim_pairs_with_titles=q.pairs_with_titles, dim_pairs=q.dim_pairs, subdim_high_crs=subdim_high_consistency_ratios, dim_high_crs=dim_high_consistency_ratios, pair_values=request.form)
         else:
             if not "questions" in session:
                 session["questions"] = QuestionsClass()

@@ -8,9 +8,19 @@
     <hr>
     <form method="POST" action="{{ url_for('pairwise_comp_page') }}">
         <div class="row">
-            <div class="card text-center mt-4 p-3 mx-auto"{% if dim_high_crs != None %} style="background:rgb(245, 125, 116)" {% endif %}>
+            <!-- <div class="card text-center mt-4 p-3 mx-auto{% if dim_high_crs != None %} bg-red {% endif %}" style="width: 450px;"> -->
+            <div class="card text-center mt-4 p-3 mx-auto" style="{% if dim_high_crs != None %} background:rgb(245, 125, 116);{% endif %} width: 450px;">
                 <h2>Dimensions</h2>
+
                 <hr>
+
+                    <p>
+                        With respect to “Digital Maturity Assessment” goal, which is more important, “Organizational Factors” or “Technological Factors”, and how much more important is it? An example evaluation is given below: If “Organizational Factors” is extremely more important than “Technological Factors”, choose 9 as in the sample below.
+                    </p>
+                    <img src="/static/1.png" alt="">
+     
+                <hr>
+
                 {% for pair in dim_pairs %}
                     <div class="" style="margin-top: 10px;">
                         <div class="row mb-auto">
@@ -50,6 +60,25 @@
                     <div class="card text-center mt-4 p-3"{% if subdim_high_crs != None and dim_name in subdim_high_crs %} style="background:rgb(245, 125, 116)" {% endif %}>
                         <h2>{{ dim_name }}</h2>
                         <hr>
+
+                            <p>
+                                {% if loop.index0 == 0 %}
+                                    With respect to “Organizational Factors”, which is more important, “Organizational Structure Management” or “Organizational Change Management”, and how much more important is it? An example evaluation is given below: If “Organizational Structure Management” is extremely more important than “Organizational Change Management”, choose 9 as in the sample below.
+                                {% elif loop.index0 == 1 %}
+                                    With respect to “Technological Factors”, which is more important, “Data & Analytics” or “Connected Systems and Applications”, and how much more important is it? An example evaluation is given below: If “Data & Analytics” is extremely more important than “Connected Systems and Applications”, choose 9 as in the sample below.
+                                {% elif loop.index0 == 2 %}
+                                    With respect to “Strategic Factors”, which is more important, “Marketing Management” or “Finance and Investment Management”, and how much more important is it? An example evaluation is given below: If “Marketing Management” is extremely more important than “Finance and Investment Management”, choose 9 as in the sample below.
+                                {% elif loop.index0 == 3 %}
+                                    With respect to “Customer Related Factors”, which is more important, “Customer Insights & Behavior" or  "Customer Trust & Perception”, and how much more important is it? An example evaluation is given below: If “Customer Insights & Behavior" is extremely more important than "Customer Trust & Perception", choose 9 as in the sample below.
+                                {% elif loop.index0 == 4 %}
+                                    With respect to “Employee Related Factors”, which is more important, “Skill” or “Social Collaboration”, and how much more important is it? An example evaluation is given below: If “Skill” is extremely more important than “Social Collaboration”, choose 9 as in the sample below.
+                                {% endif %}
+                            </p>
+                            <img src="/static/{{ loop.index0+2 }}.png" alt="">
+            
+                        <hr>
+
+
                         {% for pair in pairs %}
                             <div class="" style="margin-top: 10px;">
                                 <div class="row mb-auto">
@@ -82,8 +111,9 @@
                 </div>
             {% endfor %}
         </div>
-
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
     </form>
 </div>
 

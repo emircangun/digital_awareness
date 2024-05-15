@@ -32,6 +32,9 @@ class QuestionsClass():
         self.dim_priorities = {}
         for dim in self.dim_list:
             self.dim_priorities[dim] = 0
+            
+        self.subdim_weights = {}
+        self.dim_weights = {}
 
     def get_questions(self):
         # take also weights and make them {"answer": , "weight":}
@@ -56,11 +59,18 @@ class QuestionsClass():
     
     def update_weights_from_compares(self, dim_compares):
         for dim_name, subdims in zip(self.dim_list, self.subdim_list):
+            self.subdim_weights[dim_name] = {}
             for subdim_name in subdims:
                 subdim_weight = dim_compares[dim_name].local_weights[subdim_name]
+                self.subdim_weights[dim_name][subdim_name] = subdim_weight
+                
                 n_questions = len(self.questions[dim_name][subdim_name].keys())
                 for i in self.questions[dim_name][subdim_name].keys():
                     self.questions[dim_name][subdim_name][i]["weight"] = subdim_weight / n_questions
+    
+    def update_dim_weights_from_compares(self, dim_comp_result):
+        for dim_name in self.dim_list:
+            self.dim_weights[dim_name] = dim_comp_result.local_weights[dim_name]
     
     def clear(self):
         self.questions = self.get_questions()

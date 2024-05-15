@@ -3,68 +3,73 @@
 {% block content %}
 
 <div class="container mt-5"> 
-    <form action="{{ url_for('question_page', url_id=url_id) }}" method="post">
-        <!-- Hidden input field for URL ID -->
-        <input type="hidden" name="url_id" value="{{ url_id }}">
+    {% if not is_pairwise_done %}
+        <h3>Please make sure you have done Pairwise Comparison and then start the survey.</h3>
+        <a class="" role="button" aria-pressed="true" href="{{ url_for('pairwise_comp_page') }}"><h3>Pairwise Comparisons</h3></a>
+    {% else %}
+        <form action="{{ url_for('question_page', url_id=url_id) }}" method="post">
+            <!-- Hidden input field for URL ID -->
+            <input type="hidden" name="url_id" value="{{ url_id }}">
 
-        {% if data == {} %}
-            Welcome
+            {% if data == {} %}
+                Welcome
 
-        {% else %}
-            <h1 class="text-center">{{ title }}</h1>
-            
-            {% for subdimension, questions in data.items() %}
-                {% if subdimension != "score" %}
-                    <fieldset class="card mt-4">
-                        <div class="card-header">
-                            <h2>{{ subdimension }}</h2>
-                        </div>
-                        <div class="card-body">
-                            <!-- Loop through questions for each subdimension -->
-                            {% for i, question in questions.items() %}
-                                <div class="form-group">
-                                    <label>{{ question["question_sentence"] }}</label>
-                                    <div >
-                                        <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input" name="{{ subdimension }}_{{ loop.index }}"
-                                                id="{{ subdimension }}_{{ loop.index }}_0" value="0" required>
-                                            <label class="form-check-label" for="{{ subdimension }}_{{ loop.index }}_0">Strongly Disagree</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input" name="{{ subdimension }}_{{ loop.index }}"
-                                                id="{{ subdimension }}_{{ loop.index }}_1" value="1" required>
-                                            <label class="form-check-label" for="{{ subdimension }}_{{ loop.index }}_1">Disagree</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input" name="{{ subdimension }}_{{ loop.index }}"
-                                                id="{{ subdimension }}_{{ loop.index }}_2" value="2" required checked>
-                                            <label class="form-check-label" for="{{ subdimension }}_{{ loop.index }}_2">Neutral</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input" name="{{ subdimension }}_{{ loop.index }}"
-                                                id="{{ subdimension }}_{{ loop.index }}_3" value="3" required>
-                                            <label class="form-check-label" for="{{ subdimension }}_{{ loop.index }}_3">Agree</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input type="radio" class="form-check-input" name="{{ subdimension }}_{{ loop.index }}"
-                                                id="{{ subdimension }}_{{ loop.index }}_4" value="4" required>
-                                            <label class="form-check-label" for="{{ subdimension }}_{{ loop.index }}_4">Strongly Agree</label>
+            {% else %}
+                <h1 class="text-center">{{ title }}</h1>
+                
+                {% for subdimension, questions in data.items() %}
+                    {% if subdimension != "score" %}
+                        <fieldset class="card mt-4">
+                            <div class="card-header">
+                                <h2>{{ subdimension }}</h2>
+                            </div>
+                            <div class="card-body">
+                                <!-- Loop through questions for each subdimension -->
+                                {% for i, question in questions.items() %}
+                                    <div class="form-group">
+                                        <label>{{ question["question_sentence"] }}</label>
+                                        <div>
+                                            <div class="form-check form-check-inline">
+                                                <input type="radio" class="form-check-input" name="{{ subdimension }}_{{ loop.index }}"
+                                                    id="{{ subdimension }}_{{ loop.index }}_0" value="0" required>
+                                                <label class="form-check-label" for="{{ subdimension }}_{{ loop.index }}_0">None</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input type="radio" class="form-check-input" name="{{ subdimension }}_{{ loop.index }}"
+                                                    id="{{ subdimension }}_{{ loop.index }}_1" value="1" required>
+                                                <label class="form-check-label" for="{{ subdimension }}_{{ loop.index }}_1">Very poor</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input type="radio" class="form-check-input" name="{{ subdimension }}_{{ loop.index }}"
+                                                    id="{{ subdimension }}_{{ loop.index }}_2" value="2" required checked>
+                                                <label class="form-check-label" for="{{ subdimension }}_{{ loop.index }}_2">Below average</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input type="radio" class="form-check-input" name="{{ subdimension }}_{{ loop.index }}"
+                                                    id="{{ subdimension }}_{{ loop.index }}_3" value="3" required>
+                                                <label class="form-check-label" for="{{ subdimension }}_{{ loop.index }}_3">Average</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input type="radio" class="form-check-input" name="{{ subdimension }}_{{ loop.index }}"
+                                                    id="{{ subdimension }}_{{ loop.index }}_4" value="4" required>
+                                                <label class="form-check-label" for="{{ subdimension }}_{{ loop.index }}_4">Excellent</label>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </fieldset>
-                {% endif %}
-            {% endfor %}
+                                {% endfor %}
+                            </div>
+                        </fieldset>
+                    {% endif %}
+                {% endfor %}
 
-        {% endif %}
+            {% endif %}
 
-        <!-- Next button -->
-        <div class="text-center mt-4">
-            <button type="submit" class="btn btn-primary">Next</button>
-        </div>
-    </form>
+            <!-- Next button -->
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary">Next</button>
+            </div>
+        </form>
+    {% endif %}
 </div>
 
 {% endblock %}

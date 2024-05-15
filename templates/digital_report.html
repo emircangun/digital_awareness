@@ -1,15 +1,115 @@
-{% extends "layout.html" %}
-{% block title %}Report{% endblock %}
-{% block content %}
+{% extends "layout.html" %} {% block title %}Report{% endblock %} {% block
+content %}
 
-<div class="container">
-    <h2>Thank you for completing the survey. You can receive your recommendations in our final delivery.</h2>
-</div>
+<div>
+  <div class="container">
+    <h1 style="text-align: center; margin-top: 30px">Digital Maturity Assessment of Your Company</h1>
+  </div>
+  <div class="container" style="margin-top: 30px;">
+    <h3>Dear Valued Business Partner/Stakeholder,</h3>
+    <h4>
+      This report is prepared to analyze the current state of your company in
+      the digital transformation process and to provide recommendations for
+      improvement. The assessment is carried out across five key dimensions:
+      customer, employee, organization, technology, and strategy.
+    </h4>
+  </div>
 
-<div class="container">
+  <hr />
+
+  <div class="container">
     {{ img_tag | safe }}
-</div>
+  </div>
 
-{{ score_dict }}
+  <div class="container d-flex align-items-center justify-content-center">
+    <div class="center-table" style="width: 600px">
+      <!-- Center the second table -->
+      <table class="table table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th>Dimension</th>
+            <th>Subdimension</th>
+            <th>Weight</th>
+            <th>Global Weight</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for dim, subdims in subdim_weights.items() %} {% for subdim, weight
+          in subdims.items() %}
+          <tr>
+            <td><b>{{ dim }}</b></td>
+            <td>{{ subdim }}</td>
+            <td>{{ weight }}</td>
+            <td>{{ weight * dim_weights[dim] }}</td>
+          </tr>
+          {% endfor %} {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <hr />
+
+    <div class="center-table" style="width: 400px">
+      <!-- Center the first table -->
+      <table class="table table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th>Dimension</th>
+            <th>Weight</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for dim, weight in dim_weights.items() %}
+          <tr>
+            <td><b>{{ dim }}</b></td>
+            <td>{{ weight }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="container">
+    <h4>Overall Digital Maturity Score</h4>
+    <p>Your company's total digital maturity score is {{ overall_score }} and {{ overall_score * 25 }}%, which places you at the {{ overall_level }} level.</p>
+
+  </div>
+
+  <div class="container">
+    {% for dim, dim_dict in texts.items() %}
+    <fieldset class="card mt-4">
+      <div class="card-header">
+        <h2 style="text-align: center">{{ dim }}</h2>
+      </div>
+      <div class="card-body">
+        {% for subdim, text in dim_dict.items() %}
+        <fieldset class="card mt-4">
+          <div class="card-header">
+            <h4>{{ subdim }}</h4>
+          </div>
+          <div class="card-body">
+            <p><b>Recommendations:</b></p>
+            <p>{{ text["recommendation"] }}</p>
+            <p><b>Actionable Steps:</b></p>
+            <p>{{ text["actionable steps"] }}</p>
+          </div>
+        </fieldset>
+        {% endfor %}
+      </div>
+    </fieldset>
+    {% endfor %}
+  </div>
+
+  <hr />
+
+  <h4 class="container">
+    This report highlights the challenges and opportunities you face on your
+    journey of digital transformation. The steps to be taken in accordance with
+    the recommendations presented will help to elevate your company's digital
+    maturity level.
+  </h4>
+</div>
+<!-- {{ score_dict }} -->
 
 {% endblock %}

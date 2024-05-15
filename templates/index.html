@@ -2,7 +2,7 @@
 {% block title %}Welcome{% endblock %}
 {% block content %}
 
-<div class="container">
+<!-- <div class="container">
     <div class="card">
         <a class="" role="button" aria-pressed="true" href="{{  url_for('question_page', url_id=0) }}">Start survey</a>
     </div>
@@ -10,13 +10,18 @@
     <div class="card">
         <a class="" role="button" aria-pressed="true" href="{{ url_for('pairwise_comp_page') }}">Prioritize dimensions and compare pairwise subdimensions</a>
     </div>
-</div>
+</div> -->
 
-<div class="container d-flex justify-content-center align-items-center">
-    <div class="card text-center">
-        <h2>Hello Dear Authorized,</h2>
-        <h2>Welcome to the Digital Maturity Assessment Test.</h2>
-        <h2>Please first click on the "Pairwise Comparison" tab and make the necessary comparisons to determine the weights of the dimensions and subdimensions. After this process, click on the "Survey" tab and solve our survey consisting of 50 questions.</h2>
+<div class="container d-flex justify-content-center align-items-center align-middle" style="margin-top: 100px;">
+    <div class="text-left" style="font-size: 30px;">
+        <p>Welcome to the <b>Digital Maturity Assessment Platform.</b></p>
+        <p>This platform has two different modules. The first of these modules can be used to determine the weights of the dimensions and sub-dimensions of the digital maturity assessment model. On the other hand, the second module can be used to determine the digital maturity level of your company.</p>
+        <p>Click on the <b>“Pairwise Comparisons”</b> button to determine the weights of the dimensions and sub-dimensions in the digital maturity assessment model.</p>
+        <a class="" role="button" aria-pressed="true" href="{{ url_for('pairwise_comp_page') }}">Pairwise Comparisons</a>
+        <p></p>
+        <p>Click on the <b>“Digital Maturity Assessment”</b> button to determine your company's digital maturity level.</p>
+        <a class="" role="button" aria-pressed="true" href="{{  url_for('question_page', url_id=0) }}">Digital Maturity Assessment</a>
+
     </div>
 </div>
 

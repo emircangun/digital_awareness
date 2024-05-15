@@ -6,9 +6,9 @@ import base64
 import copy
 import ahpy
 
-from score_calculator import *
+from utils import *
 from model.questions_model import QuestionsClass
-from plot import make_spider
+from utils import make_spider, get_texts_by_scores
 
 
 def pairwise_comp_page():
@@ -18,20 +18,30 @@ def pairwise_comp_page():
 
     elif request.method == "POST":
         q = session["questions"]
-        value_mapping = {1: 1/9, 2: 1/8, 3: 1/7, 4: 1/6, 5: 1/5, 6: 1/4, 7: 1/3, 8: 1/2}
+        value_mapping = {
+            1: 9,
+            2: 8,
+            3: 7, 
+            4: 6,
+            5: 5,
+            6: 4,
+            7: 3,
+            8: 2,
+            9: 1,
+            10: 1/2,
+            11: 1/3,
+            12: 1/4,
+            13: 1/5,
+            14: 1/6,
+            15: 1/7,
+            16: 1/8,
+            17: 1/9,
+        }
         pair_values = {}
         for key, value in request.form.items():
             if key.startswith('comp_') or key.startswith('priority_'):
                 dims = key.split("_")[1:]
-                if int(value) in value_mapping.keys():
-                    pair_values[(dims[0], dims[1])] = value_mapping[int(value)]
-                else:
-                    pair_values[(dims[0], dims[1])] = int(value) - 8
-            
-            # elif key.startswith("priority_"):
-            #     dim = key.split("_")[1]
-            #     q.dim_priorities[dim] = int(value)
-
+                pair_values[(dims[0], dims[1])] = value_mapping[int(value)]
 
         # subdimension pairwise comparison
         dim_compares = {}
@@ -68,8 +78,11 @@ def pairwise_comp_page():
 
             q = session["questions"]
             q.update_weights_from_compares(dim_compares)
+            q.update_dim_weights_from_compares(dim_comp_result)
+            
+            session["questions"] = q
 
-            return render_template('digital_report.html', score_dict={"0": pair_values, "1": dim_compares})
+            return render_template('index.html')
 
 
 
@@ -78,6 +91,8 @@ def question_page(url_id):
         session["questions"] = QuestionsClass()
 
     q = session["questions"]
+    if q.subdim_weights == {}:
+        return render_template('question_page.html', data=q.questions[q.dim_list[q.current_dim_ind]], title=q.dim_list[q.current_dim_ind], url_id=url_id+1, is_pairwise_done=False)
 
     q.current_dim_ind = int(url_id)
     
@@ -94,26 +109,37 @@ def question_page(url_id):
             score_dict = score_calculator(copy.deepcopy(q.questions))
             q.scores = score_dict
         
-            df = pd.DataFrame({
+            df_scores = pd.DataFrame({
                 'group': ['Digital Awareness'],
             })
             for dim in q.dim_list:
-                df[dim] = q.scores[dim]["score"] 
+                df_scores[dim] = q.scores[dim]["score"] * 25
+        
+            img_tag = radar_chart_tag(df_scores)
+            groups, texts = get_texts_by_scores(score_dict)
+            
+            dim_weights = q.dim_weights
+            subdim_weights = q.subdim_weights
 
-            img_tag = digital_report(df)
-
-            return render_template('digital_report.html', img_tag=img_tag, score_dict=score_dict)
+            overall_score = 0
+            for dim, weight in dim_weights.items():
+                overall_score += weight * score_dict[dim]['score']
+            
+            overall_level = get_group_by_score(overall_score)
+            
+            return render_template('digital_report.html', img_tag=img_tag, score_dict=score_dict, groups=groups, texts=texts, dim_weights=dim_weights, subdim_weights=subdim_weights, overall_score=overall_score, overall_level=overall_level)
+        
         else:
             return render_template('index.html')
     
-    return render_template('question_page.html', data=q.questions[q.dim_list[q.current_dim_ind]], title=q.dim_list[q.current_dim_ind], url_id=url_id+1)
+    return render_template('question_page.html', data=q.questions[q.dim_list[q.current_dim_ind]], title=q.dim_list[q.current_dim_ind], url_id=url_id+1, is_pairwise_done=True)
 
 
 
-def digital_report(df):
+def radar_chart_tag(df):
     my_palette = matplotlib.colormaps["Set2"]
 
-    plt = make_spider(df, row=0, title='group '+df['group'][0], color=my_palette(0))
+    plt = make_spider(df, row=0, title="", color=my_palette(0))
     img = BytesIO()
     plt.savefig(img, format='png')
     img.seek(0)

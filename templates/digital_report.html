@@ -89,10 +89,15 @@ content %}
             <h4>{{ subdim }}</h4>
           </div>
           <div class="card-body">
+            {% if text["recommendation"] == text["actionable steps"] %}
+            <p><b>Congrulations!</b></p>
+            <p>{{ text["recommendation"] }}</p>
+            {% else %}
             <p><b>Recommendations:</b></p>
             <p>{{ text["recommendation"] }}</p>
             <p><b>Actionable Steps:</b></p>
             <p>{{ text["actionable steps"] }}</p>
+            {% endif %}
           </div>
         </fieldset>
         {% endfor %}

@@ -101,9 +101,12 @@ def get_texts_by_scores(score_dict):
     for dim, subdims in score_dict.items():
         groups[dim] = {}
         texts[dim] = {}
-        for subdim, subdim_score in subdims.items():
+        
+        dim_score = score_dict[dim]['score']
+        
+        for subdim, _ in subdims.items():
             if subdim != "score":
-                level, group = get_group_by_score(subdim_score['score'])
+                level, group = get_group_by_score(dim_score)
                 groups[dim][subdim] = f"{level} {group}"
             
                 title_of_suggestion = None
@@ -118,7 +121,14 @@ def get_texts_by_scores(score_dict):
                 elif level == "Level-5":
                     title_of_suggestion = "leading"
 
-                text_dict = suggestions[dim.lower().strip()][subdim.lower()][title_of_suggestion]
+                if level != "Level-5":
+                    text_dict = suggestions[dim.lower().strip()][subdim.lower()][title_of_suggestion]
+                else:
+                    text_dict = {
+                        "recommendation": suggestions[dim.lower().strip()][subdim.lower()][title_of_suggestion],
+                        "actionable steps": suggestions[dim.lower().strip()][subdim.lower()][title_of_suggestion]
+                    }
+                    
                 texts[dim][subdim] = text_dict
                 
     return groups, texts

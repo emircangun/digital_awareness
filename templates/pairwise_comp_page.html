@@ -10,15 +10,22 @@
         <div class="row">
             <!-- <div class="card text-center mt-4 p-3 mx-auto{% if dim_high_crs != None %} bg-red {% endif %}" style="width: 450px;"> -->
             <div class="card text-center mt-4 p-3 mx-auto" style="{% if dim_high_crs != None %} background:rgb(245, 125, 116);{% endif %} width: 450px;">
-                <h2>Dimensions</h2>
+                {% if dim_high_crs != None %}
+                    <h4>For the dimension/subdimension pairwise comparisons shown in red, the inconsistency ratio is over 10%: Therefore, please check your comparisons to ensure that the inconsistency ratio is below 10%.</h4>
+                    <hr>
+                {% endif %}
+                
+                <h2>Dimension Comparisons</h2>
 
                 <hr>
-
-                    <p>
+                    <p style="color: blue;">
+                        <b>Example Evaluation:</b>
+                    </p>
+                    <p style="color: blue;">
                         With respect to “Digital Maturity Assessment” goal, which is more important, “Organizational Factors” or “Technological Factors”, and how much more important is it? An example evaluation is given below: If “Organizational Factors” is extremely more important than “Technological Factors”, choose 9 as in the sample below.
                     </p>
-                    <img src="/static/1.png" alt="">
-     
+                    <img style="margin-bottom: 50px;" src="/static/1.png" alt="">
+                    
                 <hr>
 
                 {% for pair in dim_pairs %}
@@ -54,14 +61,28 @@
 
         <hr>
         
+        <h2 class="text-center">Subdimension Comparisons</h2>
         <div class="row">
             {% for dim_name, pairs in subdim_pairs_with_titles.items() %}
                 <div class="col-sm-6">
                     <div class="card text-center mt-4 p-3"{% if subdim_high_crs != None and dim_name in subdim_high_crs %} style="background:rgb(245, 125, 116)" {% endif %}>
+                        
+                        {% if subdim_high_crs != None and dim_name in subdim_high_crs %}
+                            <h4>For the dimension/subdimension pairwise comparisons shown in red, the inconsistency ratio is over 10%: Therefore, please check your comparisons to ensure that the inconsistency ratio is below 10%.</h4>
+                            <hr>
+                        {% endif %}
+
+
+
+
                         <h2>{{ dim_name }}</h2>
                         <hr>
 
-                            <p>
+                            <p style="color: blue;">
+                                <b>Example Evaluation:</b>
+                            </p>
+
+                            <p style="color: blue;">
                                 {% if loop.index0 == 0 %}
                                     With respect to “Organizational Factors”, which is more important, “Organizational Structure Management” or “Organizational Change Management”, and how much more important is it? An example evaluation is given below: If “Organizational Structure Management” is extremely more important than “Organizational Change Management”, choose 9 as in the sample below.
                                 {% elif loop.index0 == 1 %}
@@ -74,7 +95,7 @@
                                     With respect to “Employee Related Factors”, which is more important, “Skill” or “Social Collaboration”, and how much more important is it? An example evaluation is given below: If “Skill” is extremely more important than “Social Collaboration”, choose 9 as in the sample below.
                                 {% endif %}
                             </p>
-                            <img src="/static/{{ loop.index0+2 }}.png" alt="">
+                            <img style="margin-bottom: 50px;" src="/static/{{ loop.index0+2 }}.png" alt="">
             
                         <hr>
 

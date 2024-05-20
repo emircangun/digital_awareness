@@ -23,6 +23,7 @@ content %}
 
   <div class="container d-flex align-items-center justify-content-center">
     <div class="center-table" style="width: 600px">
+      <h2 class="text-center">Subdimension Weights</h2>
       <!-- Center the second table -->
       <table class="table table-striped">
         <thead class="thead-dark">
@@ -50,6 +51,7 @@ content %}
     <hr />
 
     <div class="center-table" style="width: 400px">
+      <h2 class="text-center">Dimension Weights</h2>
       <!-- Center the first table -->
       <table class="table table-striped">
         <thead class="thead-dark">
@@ -70,13 +72,61 @@ content %}
     </div>
   </div>
 
-  <div class="container">
-    <h4>Overall Digital Maturity Score</h4>
-    <p>Your company's total digital maturity score is {{ overall_score }} and {{ overall_score * 25 }}%, which places you at the {{ overall_level }} level.</p>
+  <hr>
 
+  <div class="container">
+    <h2 class="text-center">Overall Digital Maturity Score</h2> 
+    <h3>Your company's total digital maturity score is {{'%0.2f'|format(overall_score * 25|float)}} out of 100, which places you at the {{ overall_level }} level.</h3>
   </div>
 
+  <hr>
+
   <div class="container">
+
+    <h2 class="text-center">Maturity Level Definitions</h2>
+
+  <table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Maturity Level</th>
+            <th>Group</th>
+            <th>Definition</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Level-1</td>
+            <td>Initiating</td>
+            <td>Early-stage discussions are currently underway, gradually integrating into some of your business operations.</td>
+        </tr>
+        <tr>
+            <td>Level-2</td>
+            <td>Emerging</td>
+            <td>Advanced discussions are now more actively incorporated into your daily operations.</td>
+        </tr>
+        <tr>
+            <td>Level-3</td>
+            <td>Performing</td>
+            <td>Your organization has established clear objectives and developed a comprehensive plan, which is consistently implemented across the company.</td>
+        </tr>
+        <tr>
+            <td>Level-4</td>
+            <td>Advancing</td>
+            <td>Your organization is actively enhancing your plan and objectives, fostering new and innovative ideas to further develop your capabilities in this field.</td>
+        </tr>
+        <tr>
+            <td>Level-5</td>
+            <td>Leading</td>
+            <td>Recognized as a thought leader in this domain, your organization frequently spearheads industry discussions on the subject and has achieved a high level of expertise in this area.</td>
+        </tr>
+    </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <div class="container">
+    <h2 class="text-center">Improvement Suggestions</h2>
     {% for dim, dim_dict in texts.items() %}
     <fieldset class="card mt-4">
       <div class="card-header">
